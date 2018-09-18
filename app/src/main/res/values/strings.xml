@@ -1,0 +1,156 @@
+<resources>
+    <string name="app_name">注解</string>
+
+    <string name="text_title_nullness">1、Nullness注解</string>
+    <string name="text_nullness">
+        作用：\n
+        用于限定形参、返回值是否能为空。\n\n
+
+        相关注解：
+        1.@Nullable: 标记参数或者返回值可以为空。\n
+        2.@NonNull: 标记参数或者返回值不可以为空。\n\n
+
+        用法：\n
+        @Nullable\n
+        fun a(@NonNull string: String): String
+    </string>
+
+    <string name="text_title_res">2、资源类型注解</string>
+    <string name="text_res">
+        作用：\n
+        用于限定形参、返回值只能是Res相关资源\n\n
+
+        相关注解：\n
+        1.@StringRes：标记整形值为android.R.string类型(属性动画相关)。\n
+        2.@DrawableRes：标记整形值为android.R.drawable类型(属性动画相关)。\n
+        3.@ColorRes：标记整形值为android.R.color类型(属性动画相关)。\n
+        4.@DimenRes：标记整形值为android.R.dimen类型(属性动画相关)。\n
+        5.@AnimatorRes：标记整形值为android.R.animator类型(属性动画相关)。\n
+        6.@AnimRes：标记整形值为android.R.anim类型(补间动画相关)。\n
+        7.@XmlRes：标记整形值为android.R.xml类型。\n
+        8.@LayoutRes：标记整形值为android.R.layout.\n\n
+
+        用法：\n
+        @LayoutRes\n
+        abstract fun setLayoutId(): Int\n
+    </string>
+
+    <string name="text_title_type">3、类型定义注解</string>
+    <string name="text_type">
+        此类注解多用代替枚举：\n
+
+        相关注解：\n
+        1.@StringDef：\n
+        2.@IntDef：\n\n
+
+        在Android开发中，整型值不止经常用来代表资源引用值，\n
+        而且经常用来代替枚举值。\n
+        @IntDef注解可用来创建一个整型类型定义的新注解，例如:\n\n
+
+        const val NULLNESS_ANNOTATIO: Long = 0\n
+        const val RES_ANNOTATIO: Long = 1\n
+        const val Type_ANNOTATIO: Long = 2\n\n
+
+        //定义注解可以接受的类型\n
+        @IntDef(NULLNESS_ANNOTATIO, RES_ANNOTATIO, Type_ANNOTATIO)\n
+        //设置注解的保留策略，此处表示仅在源文件中，不编译\n
+        @Retention(AnnotationRetention.SOURCE)\n
+        //新注解名为WayModel\n
+        annotation class WayModel\n\n
+
+        //使用方式类似于元注解\n
+        //使用该函数时，限定way只能取WayModel中的值\n
+        fun setWay(@Way.Companion.WayModel way: Int): Builder {\n
+        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;this.way = way\n
+        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;return this\n
+        }
+    </string>
+
+    <string name="text_title_thread">4、线程注解</string>
+    <string name="text_thread">
+        Android应用开发过程中，经常会涉及到多线程的使用，界面相关操作必须在主线程，而耗时操作则需要放到后台线程中。\n
+        线程相关注解有四种：\n
+        @UiThread：标记运行在UI线程，对一个应用而言可能存在多个UI线程，每个UI线程对应不同Activity的主窗口。\n
+        @MainThread：标记运行在主线程，一个应用只有一个主线程，当然主线程也是UI线程。\n
+        通常情况下，我们使用@MainThread来注解生命周期相关的函数，使用@UiThread来注解视图相关的函数。\n
+        一帮情况下，@MainThread和@UiThread是可以互换使用的。\n
+        @WorkThread：标记运行在后台的线程。\n
+        @BinderThread：标记运行在Binder线程。\n
+    </string>
+
+    <string name="text_title_value">5、值范围注解</string>
+    <string name="text_value">
+        当函数参数的取值是在一定范围内时，可以使用值范围注解来防止调用者传入错误的参数。 \n
+        这种类型的注解有以下几种： \n
+        @Size：对于类似数组、集合和字符串之类的参数，可以使用@Size注解来表示这些参数的大小，例如：\n
+        //长度必须大于1\n
+        fun minLength(@Size(min = 1) str: String)\n
+        //长度最大为2\n
+        fun maxLength(@Size(max = 2) str: String)\n
+        //长度必须在区间[1,3]\n
+        fun lengthSection(@Size(min = 1, max = 3) str: String)\n
+        //长度必须等于2\n
+        fun lengthEquals2(@Size(2) str: String)\n
+        //长度必须是2的倍数\n
+        fun lengthMutiple(@Size(multiple = 2) str: String)\n\n
+        @IntRange和@FloatRange: 限定参数类型及取值范围，例如：\n
+        //限定int取值范围[0, 100]\n
+        fun intRange(@IntRange(from = 0, to = 100) value: Int)\n
+        //限定float取值范围[0f, 100f]\n
+        fun floatRange(@FloatRange(from = 0.0, to = 100.0) value: Float)\n
+    </string>
+
+    <string name="text_title_permission">6、权限注解</string>
+    <string name="text_permission">
+        Android应用在使用某些系统功能时，需要在AndroidManifest.xml中声明权限，否则在运行时会提示缺失对应的权限。\n
+        为了在编译期及时发现缺失的权限，我们可以使用@RequiresPermission注解。\n
+        具体的用法类似于：\n
+        //访问这个方法需要声明INTERNET权限\n
+        @RequiresPermission(Manifest.permission.INTERNET)\n
+        fun permission()\n\n
+
+        //访问这个方法需要声明INTERNET、ACCESS_COARSE_LOCATION权限所有权限\n
+        @RequiresPermission(allOf = [Manifest.permission.INTERNET, Manifest.permission.ACCEPT_HANDOVER], conditional = true)\n
+        fun permissionAll()\n\n
+        //访问这个方法需要声明INTERNET、ACCESS_COARSE_LOCATION权限中任意权限\n
+        @RequiresPermission(anyOf = [Manifest.permission.INTERNET, Manifest.permission.ACCEPT_HANDOVER], conditional = true)\n
+        fun permissionAny()\n
+    </string>
+
+    <string name="text_title_override">7、重写函数注解</string>
+    <string name="text_override">
+        如果API允许调用者重写某个函数，但同时要求重写的函数需要调用被重写的函数，那么可使用@CallSuper注解，例如Activity中的onCreate函数：\n
+
+        @CallSuper\n
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {\n
+        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;super.onViewCreated(view, savedInstanceState)\n
+        }
+    </string>
+
+    <string name="text_title_check">8、返回值注解</string>
+    <string name="text_check">
+        如果函数需要调用者对返回值做某些处理，那么可以使用@CheckResult注解来提示开发者。\n
+        我们没必要对每个非空返回值的函数都添加这个注解，该注解的主要目的是让调用者在使用API时，不至于怀疑该函数是否会产生副作用。\n
+        例如Bitmap.java中的：\n
+        @CheckResult\n
+        fun getBitmap()=null\n
+
+        @CheckResult(suggest = "fun 'setBitmap(b: Bitmap)' return value is null")\n
+        fun setBitmap(b: Bitmap?) = null\n
+    </string>
+
+    <string name="text_title_test">9、测试可见注解</string>
+    <string name="text_test">
+        单元测试中，可能需要访问到一些不可见的类、函数或变量，这时可以使用@VisibleForTesting注解来使其对测试可见。
+    </string>
+
+    <string name="text_title_keep">10、Keep注解</string>
+    <string name="text_keep">
+        注解@Keep用来标记在Proguard混淆过程中不需要混淆的类或者方法，例如：\n\n
+
+        //@Keep不混淆该方法\n
+        @Keep\n
+        fun keep()
+    </string>
+
+</resources>
